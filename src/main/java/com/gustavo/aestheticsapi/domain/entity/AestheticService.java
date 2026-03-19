@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Service {
+public class AestheticService {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
