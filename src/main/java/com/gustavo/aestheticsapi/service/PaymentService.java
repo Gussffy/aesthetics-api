@@ -5,6 +5,7 @@ import com.gustavo.aestheticsapi.domain.entity.Payment;
 import com.gustavo.aestheticsapi.domain.enums.PaymentStatus;
 import com.gustavo.aestheticsapi.dto.PaymentRequestDTO;
 import com.gustavo.aestheticsapi.dto.PaymentResponseDTO;
+import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.AppointmentRepository;
 import com.gustavo.aestheticsapi.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,9 @@ public class PaymentService {
 
     public PaymentResponseDTO create(PaymentRequestDTO request) {
 
-        Appointment appointment = appointmentRepository.findById(request.appointmentId()).orElseThrow(() -> new RuntimeException("Agendamento não encontrado com id: " + request.appointmentId()));
+        Appointment appointment = appointmentRepository.findById(request.appointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado com id: " + request.appointmentId()));
+
 
         Payment payment = new Payment();
 
@@ -41,7 +44,7 @@ public class PaymentService {
 
     public PaymentResponseDTO findByAppointmentId(Long appointmentId) {
         Payment payment = paymentRepository.findByAppointmentId(appointmentId)
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado para o agendamento com id: " + appointmentId));
+                .orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado para o agendamento com id: " + appointmentId));
 
         return new PaymentResponseDTO(
                 payment.getId(),

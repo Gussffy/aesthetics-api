@@ -3,6 +3,7 @@ package com.gustavo.aestheticsapi.service;
 import com.gustavo.aestheticsapi.domain.entity.AestheticService;
 import com.gustavo.aestheticsapi.dto.AestheticServiceRequestDTO;
 import com.gustavo.aestheticsapi.dto.AestheticServiceResponseDTO;
+import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.AestheticeServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,10 +37,31 @@ public class AestheticServiceService {
                 savedService.getActive()
         );
     }
+    public AestheticServiceResponseDTO update(Long id, AestheticServiceRequestDTO request) {
+        AestheticService service = serviceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + id));
+
+        service.setName(request.name());
+        service.setDescription(request.description());
+        service.setCategory(request.category());
+        service.setPrice(request.price());
+        service.setDurationMinutes(request.durationMinutes());
+
+        AestheticService updatedService = serviceRepository.save(service);
+        return new AestheticServiceResponseDTO(
+                updatedService.getId(),
+                updatedService.getName(),
+                updatedService.getDescription(),
+                updatedService.getCategory(),
+                updatedService.getPrice(),
+                updatedService.getDurationMinutes(),
+                updatedService.getActive()
+        );
+    }
 
     public AestheticServiceResponseDTO findById(Long id) {
         AestheticService service = serviceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + id));
 
         return new AestheticServiceResponseDTO(
                 service.getId(),
@@ -84,7 +106,7 @@ public class AestheticServiceService {
 
     public void delete(Long id) {
         AestheticService service = serviceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + id));
 
         service.setActive(false);
         serviceRepository.save(service);

@@ -3,6 +3,7 @@ package com.gustavo.aestheticsapi.service;
 import com.gustavo.aestheticsapi.domain.entity.User;
 import com.gustavo.aestheticsapi.dto.UserRequestDTO;
 import com.gustavo.aestheticsapi.dto.UserResponseDTO;
+import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,10 +34,28 @@ public class UserService {
 
     }
 
+    public UserResponseDTO update(Long id, UserRequestDTO request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado com id: " + id));
+
+        user.setName(request.name());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        user.setRole(request.role());
+
+        User updatedUser = userRepository.save(user);
+        return new UserResponseDTO(
+                updatedUser.getId(),
+                updatedUser.getName(),
+                updatedUser.getEmail(),
+                updatedUser.getRole()
+        );
+    }
+
     public UserResponseDTO findById(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario não encontrado com id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado com id: " + id));
 
         return new UserResponseDTO(
                 user.getId(),
@@ -60,7 +79,7 @@ public class UserService {
 
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Usuario não encontrado com id: " + id);
+            throw new ResourceNotFoundException("Usuario não encontrado com id: " + id);
         }
         userRepository.deleteById(id);
     }
