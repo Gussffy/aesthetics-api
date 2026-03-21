@@ -6,6 +6,7 @@ import com.gustavo.aestheticsapi.dto.UserResponseDTO;
 import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +16,13 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO create(UserRequestDTO request) {
         User user = new User();
         user.setName(request.name());
         user.setEmail(request.email());
-        //Quando chegarmos na configuração do Spring Security, vamos corrigir isso usando BCryptPasswordEncoder. Por enquanto podemos deixar assim.
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole(request.role());
 
         User savedUser = userRepository.save(user);
@@ -40,7 +41,7 @@ public class UserService {
 
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole(request.role());
 
         User updatedUser = userRepository.save(user);
