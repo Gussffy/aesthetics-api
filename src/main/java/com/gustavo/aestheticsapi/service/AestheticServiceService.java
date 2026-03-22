@@ -25,6 +25,7 @@ public class AestheticServiceService {
         service.setCategory(request.category());
         service.setPrice(request.price());
         service.setDurationMinutes(request.durationMinutes());
+        service.setActive(true);
 
         AestheticService savedService = serviceRepository.save(service);
         return new AestheticServiceResponseDTO(
