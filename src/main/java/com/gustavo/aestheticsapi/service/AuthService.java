@@ -5,6 +5,7 @@ import com.gustavo.aestheticsapi.dto.AuthRequestDTO;
 import com.gustavo.aestheticsapi.dto.AuthResponseDTO;
 import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.UserRepository;
+import com.gustavo.aestheticsapi.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

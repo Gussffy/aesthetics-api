@@ -1,7 +1,5 @@
-package com.gustavo.aestheticsapi.config;
+package com.gustavo.aestheticsapi.security;
 
-import com.gustavo.aestheticsapi.service.CustomUserDetailService;
-import com.gustavo.aestheticsapi.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

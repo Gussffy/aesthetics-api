@@ -1,4 +1,4 @@
-package com.gustavo.aestheticsapi.service;
+package com.gustavo.aestheticsapi.security;
 
 import com.gustavo.aestheticsapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

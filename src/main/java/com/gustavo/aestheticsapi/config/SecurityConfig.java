@@ -1,6 +1,7 @@
 package com.gustavo.aestheticsapi.config;
 
-import com.gustavo.aestheticsapi.service.CustomUserDetailService;
+import com.gustavo.aestheticsapi.security.CustomUserDetailService;
+import com.gustavo.aestheticsapi.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
