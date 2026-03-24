@@ -49,6 +49,7 @@ com.gustavo.aestheticsapi
 ├── controller      // HTTP request handlers (REST endpoints)
 ├── service         // Business logic layer
 ├── repository      // Database access interfaces (JPA)
+├── security        // Security services layer
 ├── domain
 │   ├── entity      // JPA entities (database tables)
 │   └── enums       // Enumerations (roles, statuses, etc.)
