@@ -7,12 +7,16 @@ import com.gustavo.aestheticsapi.domain.enums.AppointmentStatus;
 import com.gustavo.aestheticsapi.dto.AppointmentRequestDTO;
 import com.gustavo.aestheticsapi.dto.AppointmentResponseDTO;
 import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
+import com.gustavo.aestheticsapi.exception.AppointmentException;
+import com.gustavo.aestheticsapi.exception.ServiceUnavailableException;
+import com.gustavo.aestheticsapi.exception.ConflictException;
 import com.gustavo.aestheticsapi.repository.AestheticeServiceRepository;
 import com.gustavo.aestheticsapi.repository.AppointmentRepository;
 import com.gustavo.aestheticsapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,18 +29,36 @@ public class AppointmentService {
 
     public AppointmentResponseDTO create(AppointmentRequestDTO request) {
 
+        if (request.scheduledAt().isBefore(LocalDateTime.now())) {
+            throw new AppointmentException("Não é permitido agendar em data/hora passada");
+        }
+
         User client = userRepository.findById(request.clientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + request.clientId()));
 
         AestheticService service = aestheticeServiceRepository.findById(request.serviceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + request.serviceId()));
 
+        if (!service.getActive()) {
+            throw new ServiceUnavailableException("Serviço selecionado não está disponível");
+        }
+
+        List<Appointment> conflictingAppointments = appointmentRepository.findByClientId(request.clientId())
+                .stream()
+                .filter(apt -> apt.getScheduledAt().equals(request.scheduledAt()))
+                .filter(apt -> apt.getStatus() != AppointmentStatus.CANCELLED) // ignora cancelados
+                .toList();
+
+        if (!conflictingAppointments.isEmpty()) {
+            throw new ConflictException("Cliente já possui agendamento neste horário");
+        }
+
         Appointment appointment = new Appointment();
         appointment.setClient(client);
         appointment.setService(service);
         appointment.setScheduledAt(request.scheduledAt());
-
         appointment.setStatus(AppointmentStatus.PENDING);
+
         Appointment savedAppointment = appointmentRepository.save(appointment);
 
         return new AppointmentResponseDTO(
@@ -76,8 +98,9 @@ public class AppointmentService {
 
     public List<AppointmentResponseDTO> findByClientId(Long clientId) {
 
-        User client = userRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + clientId));
+        if (!userRepository.existsById(clientId)) {
+            throw new ResourceNotFoundException("Cliente não encontrado com id: " + clientId);
+        }
 
         List<Appointment> appointments = appointmentRepository.findByClientId(clientId);
         return appointments.stream()
