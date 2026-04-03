@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +29,14 @@ public class Appointment {
     @JoinColumn (name = "service_id")
     private AestheticService service;
 
+    @ManyToOne
+    @JoinColumn (name = "establishment_id", nullable = false)
+    private Establishment establishment;
+
+    @ManyToOne
+    @JoinColumn (name = "branch_id", nullable = false)
+    private Branch branch;
+
     @Column (nullable = false)
     private LocalDateTime scheduledAt;
 
@@ -36,4 +45,7 @@ public class Appointment {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
