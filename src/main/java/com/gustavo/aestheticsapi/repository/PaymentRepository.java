@@ -22,4 +22,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     BigDecimal findTotalPaidToday(@Param("start") LocalDateTime start,
                                   @Param("end") LocalDateTime end,
                                   @Param("status") PaymentStatus status);
+
+    @Query("SELECT COALESCE(SUM(p.amount), 0) " +
+            "FROM Payment p " +
+            "WHERE p.paymentStatus = :status " +
+            "AND p.createdAt >= :start AND p.createdAt <= :end")
+    BigDecimal sumPaymentsByStatusAndPeriod(@Param("start") LocalDateTime start,
+                                            @Param("end") LocalDateTime end,
+                                            @Param("status") PaymentStatus status);
 }

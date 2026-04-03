@@ -3,6 +3,8 @@ package com.gustavo.aestheticsapi.service;
 import com.gustavo.aestheticsapi.domain.entity.Appointment;
 import com.gustavo.aestheticsapi.domain.enums.AppointmentStatus;
 import com.gustavo.aestheticsapi.domain.enums.PaymentStatus;
+import com.gustavo.aestheticsapi.dto.BillingForecastResponseDTO;
+import com.gustavo.aestheticsapi.dto.BillingPeriodResponseDTO;
 import com.gustavo.aestheticsapi.dto.DashboardResponseDTO;
 import com.gustavo.aestheticsapi.repository.AppointmentRepository;
 import com.gustavo.aestheticsapi.repository.PaymentRepository;
@@ -55,6 +57,50 @@ public class DashboardService {
                 confirmed,
                 completed,
                 cancelled
+        );
+    }
+    public BillingForecastResponseDTO getForecast(LocalDate start, LocalDate end) {
+        LocalDateTime startAt = start.atStartOfDay();
+        LocalDateTime endAt = end.atTime(23, 59, 59);
+
+        BigDecimal total = appointmentRepository.sumProjectedRevenue(
+                startAt,
+                endAt,
+                List.of(AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED)
+        );
+
+        return new BillingForecastResponseDTO(start, end, total);
+    }
+
+    public BillingPeriodResponseDTO getBillingPeriod(LocalDate start, LocalDate end){
+
+        LocalDateTime startAt = start.atStartOfDay();
+        LocalDateTime endAt = end.atTime(23, 59, 59);
+
+        BigDecimal projected = appointmentRepository.sumProjectedRevenueByPeriod(
+                startAt,
+                endAt,
+                List.of(AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED)
+        );
+
+        BigDecimal confirmedPayments = paymentRepository.sumPaymentsByStatusAndPeriod(
+                startAt,
+                endAt,
+                PaymentStatus.PAID
+        );
+
+        BigDecimal pendingPayments = paymentRepository.sumPaymentsByStatusAndPeriod(
+                startAt,
+                endAt,
+                PaymentStatus.PENDING
+        );
+
+        return new BillingPeriodResponseDTO(
+                start,
+                end,
+                projected,
+                confirmedPayments,
+                pendingPayments
         );
     }
 }
