@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record AestheticServiceRequestDTO(
+        @NotNull Long establishmentId,
         @NotBlank String name,
         String description,
         @NotBlank String category,

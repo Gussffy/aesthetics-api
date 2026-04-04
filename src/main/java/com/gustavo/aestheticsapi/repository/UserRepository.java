@@ -1,8 +1,10 @@
 package com.gustavo.aestheticsapi.repository;
 
 import com.gustavo.aestheticsapi.domain.entity.User;
+import com.gustavo.aestheticsapi.domain.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -12,4 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Metodo para verificar se um email já existe no banco de dados
     boolean existsByEmail(String email);
+
+    List<User> findByEstablishmentId (Long establishmentId);
+
+    List<User> findByBranchId (Long branchId);
+
+    List<User> findByEstablishmentIdAndRole (Long establishmentId, UserRole role);
 }

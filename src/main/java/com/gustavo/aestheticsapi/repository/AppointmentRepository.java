@@ -12,26 +12,45 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-  // Metodo para encontrar todos os agendamentos de um cliente específico
-  List<Appointment> findByClientId(Long userId);
+    // Metodo para encontrar todos os agendamentos de um cliente específico
+    List<Appointment> findByClientId(Long userId);
 
-  List<Appointment> findByScheduledAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Appointment> findByScheduledAtBetween(LocalDateTime start, LocalDateTime end);
 
-  @Query("SELECT COALESCE(SUM(s.price), 0) " +
-          "FROM Appointment a " +
-          "JOIN a.service s " +
-          "WHERE a.scheduledAt BETWEEN :start AND :end " +
-          "AND a.status IN :statuses")
-  BigDecimal sumProjectedRevenue(@Param("start") LocalDateTime start,
-                                 @Param("end") LocalDateTime end,
-                                 @Param("statuses") List<AppointmentStatus> statuses);
+    List<Appointment> findByEstablishmentId(Long establishmentId);
 
-  @Query("SELECT COALESCE(SUM(s.price), 0) " +
-          "FROM Appointment a " +
-          "JOIN a.service s " +
-          "WHERE a.scheduledAt >= :start AND a.scheduledAt <= :end " +
-          "AND a.status IN :statuses")
-  BigDecimal sumProjectedRevenueByPeriod(@Param("start") LocalDateTime start,
-                                         @Param("end") LocalDateTime end,
-                                         @Param("statuses") List<AppointmentStatus> statuses);
+    List<Appointment> findByBranchId(Long branchId);
+
+    List<Appointment> findByClientIdAndEstablishmentId(Long clientId, Long establishmentId);
+
+    List<Appointment> findByBranchIdAndScheduledAtBetween(Long branchId, LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT COALESCE(SUM(s.price), 0) " +
+            "FROM Appointment a " +
+            "JOIN a.service s " +
+            "WHERE a.branch.id = :branchId " +
+            "AND a.scheduledAt BETWEEN :start AND :end " +
+            "AND a.status IN :statuses")
+    BigDecimal sumProjectedRevenueByBranchByPeriod(@Param("branchId") Long branchId,
+                                                   @Param("start") LocalDateTime start,
+                                                   @Param("end") LocalDateTime end,
+                                                   @Param("statuses") List<AppointmentStatus> statuses);
+    
+    @Query("SELECT COALESCE(SUM(s.price), 0) " +
+            "FROM Appointment a " +
+            "JOIN a.service s " +
+            "WHERE a.scheduledAt BETWEEN :start AND :end " +
+            "AND a.status IN :statuses")
+    BigDecimal sumProjectedRevenue(@Param("start") LocalDateTime start,
+                                   @Param("end") LocalDateTime end,
+                                   @Param("statuses") List<AppointmentStatus> statuses);
+
+    @Query("SELECT COALESCE(SUM(s.price), 0) " +
+            "FROM Appointment a " +
+            "JOIN a.service s " +
+            "WHERE a.scheduledAt >= :start AND a.scheduledAt <= :end " +
+            "AND a.status IN :statuses")
+    BigDecimal sumProjectedRevenueByPeriod(@Param("start") LocalDateTime start,
+                                           @Param("end") LocalDateTime end,
+                                           @Param("statuses") List<AppointmentStatus> statuses);
 }

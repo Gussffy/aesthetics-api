@@ -1,10 +1,12 @@
 package com.gustavo.aestheticsapi.service;
 
 import com.gustavo.aestheticsapi.domain.entity.AestheticService;
+import com.gustavo.aestheticsapi.domain.entity.Establishment;
 import com.gustavo.aestheticsapi.dto.AestheticServiceRequestDTO;
 import com.gustavo.aestheticsapi.dto.AestheticServiceResponseDTO;
 import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.repository.AestheticeServiceRepository;
+import com.gustavo.aestheticsapi.repository.EstablishmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,16 @@ import java.util.List;
 public class AestheticServiceService {
 
     private final AestheticeServiceRepository serviceRepository;
+    private final EstablishmentRepository establishmentRepository;
 
     public AestheticServiceResponseDTO create(AestheticServiceRequestDTO request){
 
+        Establishment establishment = establishmentRepository.findById(request.establishmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Estabelecimento não encontrado com id: " + request.establishmentId()));
+
         AestheticService service = new AestheticService();
 
+        service.setEstablishment(establishment);
         service.setName(request.name());
         service.setDescription(request.description());
         service.setCategory(request.category());

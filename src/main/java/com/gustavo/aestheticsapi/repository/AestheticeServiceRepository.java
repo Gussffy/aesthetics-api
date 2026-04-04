@@ -9,4 +9,8 @@ public interface AestheticeServiceRepository extends JpaRepository<AestheticServ
 
     // Metodo para encontrar todos os serviços ativos
     List<AestheticService> findByActiveTrue();
+
+    List<AestheticService> findByEstablishmentId (Long establishmentId);
+
+    List<AestheticService> findByEstablishmentIdAndActiveTrue (Long branchId);
 }

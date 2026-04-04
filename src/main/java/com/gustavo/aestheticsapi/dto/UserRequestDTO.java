@@ -11,6 +11,8 @@ public record UserRequestDTO(
         @NotBlank String name,
         @Email @NotBlank String email,
         @NotBlank String password,
-        @NotNull UserRole role
+        @NotNull UserRole role,
+        @NotNull Long establishmentId,
+        Long branchId
 ) {
 }

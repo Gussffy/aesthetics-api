@@ -1,8 +1,6 @@
 package com.gustavo.aestheticsapi.service;
 
-import com.gustavo.aestheticsapi.domain.entity.AestheticService;
-import com.gustavo.aestheticsapi.domain.entity.Appointment;
-import com.gustavo.aestheticsapi.domain.entity.User;
+import com.gustavo.aestheticsapi.domain.entity.*;
 import com.gustavo.aestheticsapi.domain.enums.AppointmentStatus;
 import com.gustavo.aestheticsapi.dto.AppointmentRequestDTO;
 import com.gustavo.aestheticsapi.dto.AppointmentResponseDTO;
@@ -10,9 +8,7 @@ import com.gustavo.aestheticsapi.exception.ResourceNotFoundException;
 import com.gustavo.aestheticsapi.exception.AppointmentException;
 import com.gustavo.aestheticsapi.exception.ServiceUnavailableException;
 import com.gustavo.aestheticsapi.exception.ConflictException;
-import com.gustavo.aestheticsapi.repository.AestheticeServiceRepository;
-import com.gustavo.aestheticsapi.repository.AppointmentRepository;
-import com.gustavo.aestheticsapi.repository.UserRepository;
+import com.gustavo.aestheticsapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +22,20 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
     private final AestheticeServiceRepository aestheticeServiceRepository;
+    private final BranchRepository branchRepository;
+    private final BranchServiceRepository branchServiceRepository;
 
     public AppointmentResponseDTO create(AppointmentRequestDTO request) {
 
         if (request.scheduledAt().isBefore(LocalDateTime.now())) {
             throw new AppointmentException("Não é permitido agendar em data/hora passada");
+        }
+
+        Branch branch = branchRepository.findById(request.branchId())
+                .orElseThrow(() -> new ResourceNotFoundException("Filial não encontrada com id: " + request.branchId()));
+
+        if (!branch.getEstablishment().getId().equals(request.establishmentId())) {
+            throw new ConflictException("A filial selecionada não pertence ao estabelecimento informado");
         }
 
         User client = userRepository.findById(request.clientId())
@@ -39,13 +44,18 @@ public class AppointmentService {
         AestheticService service = aestheticeServiceRepository.findById(request.serviceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + request.serviceId()));
 
-        if (!service.getActive()) {
-            throw new ServiceUnavailableException("Serviço selecionado não está disponível");
+        BranchService branchService = branchServiceRepository
+                .findByBranchIdAndServiceId(request.branchId(), request.serviceId())
+                .orElseThrow(() -> new ServiceUnavailableException("O serviço selecionado não está disponível nesta filial"));
+
+        if (!branchService.getAvailable()) {
+            throw new ServiceUnavailableException("Serviço selecionado não está disponível nesta filial");
         }
 
-        List<Appointment> conflictingAppointments = appointmentRepository.findByClientId(request.clientId())
+        List<Appointment> conflictingAppointments = appointmentRepository
+                .findByBranchIdAndScheduledAtBetween(request.branchId(), request.scheduledAt(), request.scheduledAt())
                 .stream()
-                .filter(apt -> apt.getScheduledAt().equals(request.scheduledAt()))
+                .filter(apt -> apt.getClient().getId().equals(request.clientId()))
                 .filter(apt -> apt.getStatus() != AppointmentStatus.CANCELLED) // ignora cancelados
                 .toList();
 
@@ -56,6 +66,8 @@ public class AppointmentService {
         Appointment appointment = new Appointment();
         appointment.setClient(client);
         appointment.setService(service);
+        appointment.setEstablishment(branch.getEstablishment());
+        appointment.setBranch(branch);
         appointment.setScheduledAt(request.scheduledAt());
         appointment.setStatus(AppointmentStatus.PENDING);
 
