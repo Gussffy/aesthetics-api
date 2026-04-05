@@ -23,7 +23,7 @@ public class AppointmentService {
     private final UserRepository userRepository;
     private final AestheticeServiceRepository aestheticeServiceRepository;
     private final BranchRepository branchRepository;
-    private final BranchServiceRepository branchServiceRepository;
+    private final BranchAestheticServiceRepository branchAestheticServiceRepository;
 
     public AppointmentResponseDTO create(AppointmentRequestDTO request) {
 
@@ -44,11 +44,11 @@ public class AppointmentService {
         AestheticService service = aestheticeServiceRepository.findById(request.serviceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + request.serviceId()));
 
-        BranchService branchService = branchServiceRepository
+        BranchAestheticService branchAestheticService = branchAestheticServiceRepository
                 .findByBranchIdAndServiceId(request.branchId(), request.serviceId())
                 .orElseThrow(() -> new ServiceUnavailableException("O serviço selecionado não está disponível nesta filial"));
 
-        if (!branchService.getAvailable()) {
+        if (!branchAestheticService.getAvailable()) {
             throw new ServiceUnavailableException("Serviço selecionado não está disponível nesta filial");
         }
 

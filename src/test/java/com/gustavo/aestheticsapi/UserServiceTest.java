@@ -40,7 +40,9 @@ public class UserServiceTest {
                 "Cliente teste",
                 "client@email.com",
                 "password123",
-                UserRole.CLIENT
+                UserRole.CLIENT,
+                1L,
+                null
         );
 
         User fakeUser = new User();

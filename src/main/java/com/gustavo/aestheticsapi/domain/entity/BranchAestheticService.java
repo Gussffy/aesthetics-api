@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BranchService {
+public class BranchAestheticService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
