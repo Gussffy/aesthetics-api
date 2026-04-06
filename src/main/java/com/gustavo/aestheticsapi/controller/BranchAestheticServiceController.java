@@ -25,13 +25,13 @@ public class BranchAestheticServiceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(branchAestheticServiceService.create(request));
     }
 
-    @GetMapping("/branch/{branchId")
+    @GetMapping("/branch/{branchId}")
     public ResponseEntity<List<BranchAestheticServiceResponseDTO>> findByBranchIdAndAvailable(@PathVariable Long branchId) {
         return ResponseEntity.ok(branchAestheticServiceService.findByBranchIdAndAvailable(branchId));
     }
 
-    @PatchMapping
-    public ResponseEntity<Void> deactivate (@RequestParam Long id) {
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivate (@PathVariable Long id) {
         branchAestheticServiceService.deactivate(id);
         return ResponseEntity.noContent().build();
     }
