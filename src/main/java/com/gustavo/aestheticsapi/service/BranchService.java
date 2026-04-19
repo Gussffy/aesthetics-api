@@ -35,6 +35,7 @@ public class BranchService {
                 });
 
         Branch branch = new Branch();
+        branch.setEstablishment(establishment);
         branch.setBranchCode(request.branchCode());
         branch.setName(request.name());
         branch.setAddress(request.address());
