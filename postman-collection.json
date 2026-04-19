@@ -1,15 +1,15 @@
 {
   "info": {
-    "name": "Aesthetics API - Complete Flow",
-    "description": "Collection completa para testar todos os endpoints da Aesthetics API",
+    "name": "Aesthetics API - Basic",
+    "description": "Collection básica da Aesthetics API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "1. Setup - Estabelecimento",
+      "name": "1. Establishment",
       "item": [
         {
-          "name": "Criar Estabelecimento",
+          "name": "Criar Establishment",
           "request": {
             "method": "POST",
             "header": [
@@ -29,18 +29,16 @@
               "port": "8080",
               "path": ["establishments"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Listar Estabelecimentos",
+          "name": "Listar Establishments",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -50,37 +48,61 @@
               "port": "8080",
               "path": ["establishments"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Obter Estabelecimento por ID",
+          "name": "Obter Establishment por ID",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/establishments/{{establishment_id}}",
+              "raw": "http://localhost:8080/establishments/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["establishments", "{{establishment_id}}"]
+              "path": ["establishments", "1"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Atualizar Establishment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Salão Premium Atualizado\",\n  \"email\": \"novo@salao.com\",\n  \"cnpj\": \"12.345.678/0001-99\",\n  \"domain\": \"salao-premium-novo.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/establishments/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["establishments", "1"]
+            }
+          }
         }
       ]
     },
     {
-      "name": "2. Setup - Filiais",
+      "name": "2. Branch",
       "item": [
         {
-          "name": "Criar Filial 1",
+          "name": "Criar Branch",
           "request": {
             "method": "POST",
             "header": [
@@ -90,13 +112,12 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"branchCode\": \"CENTRO\",\n  \"name\": \"Filial Centro\",\n  \"address\": \"Rua das Flores, 123\",\n  \"subdomain\": \"centro\"\n}"
+              "raw": "{\n  \"establishmentId\": 1,\n  \"branchCode\": \"CENTRO\",\n  \"name\": \"Filial Centro\",\n  \"address\": \"Rua das Flores, 123\",\n  \"subdomain\": \"centro\"\n}"
             },
             "url": {
               "raw": "http://localhost:8080/branches",
@@ -105,13 +126,50 @@
               "port": "8080",
               "path": ["branches"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Criar Filial 2",
+          "name": "Listar Branches por Establishment",
           "request": {
-            "method": "POST",
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/branches/establishment/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["branches", "establishment", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obter Branch por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/branches/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["branches", "1"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Branch",
+          "request": {
+            "method": "PUT",
             "header": [
               {
                 "key": "Content-Type",
@@ -119,52 +177,29 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"branchCode\": \"ZONA_SUL\",\n  \"name\": \"Filial Zona Sul\",\n  \"address\": \"Av. Paulista, 1000\",\n  \"subdomain\": \"zona-sul\"\n}"
+              "raw": "{\n  \"establishmentId\": 1,\n  \"branchCode\": \"CENTRO\",\n  \"name\": \"Filial Centro Atualizada\",\n  \"address\": \"Rua das Flores, 456\",\n  \"subdomain\": \"centro-novo\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/branches",
+              "raw": "http://localhost:8080/branches/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["branches"]
+              "path": ["branches", "1"]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Filiais do Estabelecimento",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://localhost:8080/branches/establishment/{{establishment_id}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["branches", "establishment", "{{establishment_id}}"]
-            }
-          },
-          "response": []
+          }
         }
       ]
     },
     {
-      "name": "3. Usuários",
+      "name": "3. Users",
       "item": [
         {
-          "name": "Criar Usuário - OWNER",
+          "name": "Criar Usuário OWNER",
           "request": {
             "method": "POST",
             "header": [
@@ -175,7 +210,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"João Silva - Proprietário\",\n  \"email\": \"joao@salao.com\",\n  \"password\": \"senha123\",\n  \"role\": \"OWNER\",\n  \"establishmentId\": {{establishment_id}},\n  \"branchId\": {{branch1_id}}\n}"
+              "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao@salao.com\",\n  \"password\": \"senha123\",\n  \"role\": \"OWNER\",\n  \"establishmentId\": 1,\n  \"branchId\": 1\n}"
             },
             "url": {
               "raw": "http://localhost:8080/users",
@@ -184,11 +219,10 @@
               "port": "8080",
               "path": ["users"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Criar Usuário - EMPLOYEE",
+          "name": "Criar Usuário EMPLOYEE",
           "request": {
             "method": "POST",
             "header": [
@@ -199,7 +233,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Maria Santos - Funcionária\",\n  \"email\": \"maria@salao.com\",\n  \"password\": \"senha123\",\n  \"role\": \"EMPLOYEE\",\n  \"establishmentId\": {{establishment_id}},\n  \"branchId\": {{branch1_id}}\n}"
+              "raw": "{\n  \"name\": \"Maria Santos\",\n  \"email\": \"maria@salao.com\",\n  \"password\": \"senha123\",\n  \"role\": \"EMPLOYEE\",\n  \"establishmentId\": 1,\n  \"branchId\": 1\n}"
             },
             "url": {
               "raw": "http://localhost:8080/users",
@@ -208,11 +242,10 @@
               "port": "8080",
               "path": ["users"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Criar Usuário - CLIENT 1",
+          "name": "Criar Usuário CLIENT",
           "request": {
             "method": "POST",
             "header": [
@@ -223,7 +256,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Ana Costa - Cliente\",\n  \"email\": \"ana@email.com\",\n  \"password\": \"senha123\",\n  \"role\": \"CLIENT\",\n  \"establishmentId\": {{establishment_id}}\n}"
+              "raw": "{\n  \"name\": \"Ana Costa\",\n  \"email\": \"ana@email.com\",\n  \"password\": \"senha123\",\n  \"role\": \"CLIENT\",\n  \"establishmentId\": 1\n}"
             },
             "url": {
               "raw": "http://localhost:8080/users",
@@ -232,32 +265,7 @@
               "port": "8080",
               "path": ["users"]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Criar Usuário - CLIENT 2",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Bruno Lima - Cliente\",\n  \"email\": \"bruno@email.com\",\n  \"password\": \"senha123\",\n  \"role\": \"CLIENT\",\n  \"establishmentId\": {{establishment_id}}\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/users",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["users"]
-            }
-          },
-          "response": []
+          }
         },
         {
           "name": "Listar Usuários",
@@ -266,8 +274,7 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -277,30 +284,80 @@
               "port": "8080",
               "path": ["users"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Obter Usuário por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Usuário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"João Silva Atualizado\",\n  \"email\": \"joao.novo@salao.com\",\n  \"password\": \"novaSenha123\",\n  \"role\": \"OWNER\",\n  \"establishmentId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Usuário",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["users", "1"]
+            }
+          }
         }
       ]
     },
     {
-      "name": "4. Autenticação",
+      "name": "4. Authentication",
       "item": [
         {
-          "name": "Login - OWNER (João)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "if (pm.response.code === 200) {",
-                  "  var jsonData = pm.response.json();",
-                  "  pm.environment.set('token', jsonData.token);",
-                  "  console.log('Token OWNER guardado com sucesso');",
-                  "}"
-                ]
-              }
-            }
-          ],
+          "name": "Login",
           "request": {
             "method": "POST",
             "header": [
@@ -320,54 +377,15 @@
               "port": "8080",
               "path": ["auth", "login"]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Login - CLIENT (Ana)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "if (pm.response.code === 200) {",
-                  "  var jsonData = pm.response.json();",
-                  "  pm.environment.set('token_client', jsonData.token);",
-                  "  console.log('Token CLIENT guardado com sucesso');",
-                  "}"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"ana@email.com\",\n  \"password\": \"senha123\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/auth/login",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["auth", "login"]
-            }
-          },
-          "response": []
+          }
         }
       ]
     },
     {
-      "name": "5. Serviços",
+      "name": "5. Services",
       "item": [
         {
-          "name": "Criar Serviço - Limpeza de Pele",
+          "name": "Criar Serviço",
           "request": {
             "method": "POST",
             "header": [
@@ -377,13 +395,12 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"name\": \"Limpeza de Pele\",\n  \"description\": \"Limpeza profunda da pele do rosto com hidratação\",\n  \"category\": \"Facial\",\n  \"price\": 150.00,\n  \"durationMinutes\": 60\n}"
+              "raw": "{\n  \"establishmentId\": 1,\n  \"name\": \"Limpeza de Pele\",\n  \"description\": \"Limpeza profunda da pele do rosto com hidratação\",\n  \"category\": \"Facial\",\n  \"price\": 150.00,\n  \"durationMinutes\": 60\n}"
             },
             "url": {
               "raw": "http://localhost:8080/services",
@@ -392,76 +409,16 @@
               "port": "8080",
               "path": ["services"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Criar Serviço - Manicure",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"name\": \"Manicure\",\n  \"description\": \"Manicure completa com esmalte\",\n  \"category\": \"Unhas\",\n  \"price\": 50.00,\n  \"durationMinutes\": 45\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/services",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["services"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Criar Serviço - Pedicure",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"name\": \"Pedicure\",\n  \"description\": \"Pedicure completa com hidratação\",\n  \"category\": \"Unhas\",\n  \"price\": 60.00,\n  \"durationMinutes\": 45\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/services",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["services"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Todos os Serviços",
+          "name": "Listar Serviços",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -471,18 +428,16 @@
               "port": "8080",
               "path": ["services"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Listar Serviços Ativos (Client)",
+          "name": "Listar Serviços Ativos",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -492,8 +447,7 @@
               "port": "8080",
               "path": ["services", "active"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Obter Serviço por ID",
@@ -502,27 +456,71 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/services/{{service1_id}}",
+              "raw": "http://localhost:8080/services/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["services", "{{service1_id}}"]
+              "path": ["services", "1"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Atualizar Serviço",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"establishmentId\": 1,\n  \"name\": \"Limpeza de Pele Premium\",\n  \"description\": \"Limpeza profunda com máscara de ouro\",\n  \"category\": \"Facial\",\n  \"price\": 200.00,\n  \"durationMinutes\": 90\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/services/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["services", "1"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Serviço",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/services/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["services", "1"]
+            }
+          }
         }
       ]
     },
     {
-      "name": "6. Serviços por Filial",
+      "name": "6. Branch Services",
       "item": [
         {
-          "name": "Adicionar Serviço na Filial 1",
+          "name": "Adicionar Serviço na Branch",
           "request": {
             "method": "POST",
             "header": [
@@ -532,13 +530,12 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"branchId\": {{branch1_id}},\n  \"serviceId\": {{service1_id}}\n}"
+              "raw": "{\n  \"branchId\": 1,\n  \"serviceId\": 1\n}"
             },
             "url": {
               "raw": "http://localhost:8080/branchs-services",
@@ -547,66 +544,53 @@
               "port": "8080",
               "path": ["branchs-services"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Adicionar Manicure na Filial 1",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"branchId\": {{branch1_id}},\n  \"serviceId\": {{service2_id}}\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/branchs-services",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["branchs-services"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Serviços Disponíveis na Filial",
+          "name": "Listar Serviços da Branch",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/branchs-services/branch/{{branch1_id}}",
+              "raw": "http://localhost:8080/branchs-services/branch/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["branchs-services", "branch", "{{branch1_id}}"]
+              "path": ["branchs-services", "branch", "1"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Desativar Serviço da Branch",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/branchs-services/1/deactivate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["branchs-services", "1", "deactivate"]
+            }
+          }
         }
       ]
     },
     {
-      "name": "7. Agendamentos",
+      "name": "7. Appointments",
       "item": [
         {
-          "name": "Criar Agendamento - Cliente Ana",
+          "name": "Criar Agendamento",
           "request": {
             "method": "POST",
             "header": [
@@ -616,13 +600,12 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"clientId\": {{client1_id}},\n  \"serviceId\": {{service1_id}},\n  \"establishmentId\": {{establishment_id}},\n  \"branchId\": {{branch1_id}},\n  \"scheduledAt\": \"2026-04-25T10:00:00\"\n}"
+              "raw": "{\n  \"clientId\": 3,\n  \"serviceId\": 1,\n  \"establishmentId\": 1,\n  \"branchId\": 1,\n  \"scheduledAt\": \"2026-04-25T10:00:00\"\n}"
             },
             "url": {
               "raw": "http://localhost:8080/appointments",
@@ -631,47 +614,16 @@
               "port": "8080",
               "path": ["appointments"]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Criar Agendamento - Cliente Bruno",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"clientId\": {{client2_id}},\n  \"serviceId\": {{service2_id}},\n  \"establishmentId\": {{establishment_id}},\n  \"branchId\": {{branch1_id}},\n  \"scheduledAt\": \"2026-04-25T14:00:00\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/appointments",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["appointments"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Agendamentos (OWNER)",
+          "name": "Listar Agendamentos",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -681,8 +633,7 @@
               "port": "8080",
               "path": ["appointments"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Obter Agendamento por ID",
@@ -691,19 +642,17 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/appointments/{{appointment1_id}}",
+              "raw": "http://localhost:8080/appointments/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["appointments", "{{appointment1_id}}"]
+              "path": ["appointments", "1"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Listar Agendamentos do Cliente",
@@ -712,27 +661,44 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/appointments/client/{{client1_id}}",
+              "raw": "http://localhost:8080/appointments/client/3",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["appointments", "client", "{{client1_id}}"]
+              "path": ["appointments", "client", "3"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Cancelar Agendamento",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer SEU_TOKEN_AQUI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/appointments/1/cancel",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["appointments", "1", "cancel"]
+            }
+          }
         }
       ]
     },
     {
-      "name": "8. Pagamentos",
+      "name": "8. Payments",
       "item": [
         {
-          "name": "Criar Pagamento - PIX",
+          "name": "Criar Pagamento",
           "request": {
             "method": "POST",
             "header": [
@@ -742,13 +708,12 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"appointmentId\": {{appointment1_id}},\n  \"paymentMethod\": \"PIX\"\n}"
+              "raw": "{\n  \"appointmentId\": 1,\n  \"paymentMethod\": \"PIX\"\n}"
             },
             "url": {
               "raw": "http://localhost:8080/payments",
@@ -757,37 +722,7 @@
               "port": "8080",
               "path": ["payments"]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Criar Pagamento - CARTÃO",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"appointmentId\": {{appointment2_id}},\n  \"paymentMethod\": \"CREDIT_CARD\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/payments",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["payments"]
-            }
-          },
-          "response": []
+          }
         },
         {
           "name": "Obter Pagamento por Agendamento",
@@ -796,34 +731,31 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/payments/appointment/{{appointment1_id}}",
+              "raw": "http://localhost:8080/payments/appointment/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["payments", "appointment", "{{appointment1_id}}"]
+              "path": ["payments", "appointment", "1"]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
     {
-      "name": "9. Dashboard e Faturamento",
+      "name": "9. Dashboard",
       "item": [
         {
-          "name": "Obter Dashboard Hoje",
+          "name": "Dashboard Hoje",
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -833,8 +765,7 @@
               "port": "8080",
               "path": ["dashboard"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Faturamento por Período",
@@ -843,8 +774,7 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "value": "Bearer SEU_TOKEN_AQUI"
               }
             ],
             "url": {
@@ -864,161 +794,9 @@
                 }
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
-    },
-    {
-      "name": "10. Cancelamento e Atualizações",
-      "item": [
-        {
-          "name": "Cancelar Agendamento",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token_client}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://localhost:8080/appointments/{{appointment2_id}}/cancel",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["appointments", "{{appointment2_id}}", "cancel"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Atualizar Serviço",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"establishmentId\": {{establishment_id}},\n  \"name\": \"Limpeza de Pele Premium\",\n  \"description\": \"Limpeza profunda da pele do rosto com hidratação e máscara de ouro\",\n  \"category\": \"Facial\",\n  \"price\": 200.00,\n  \"durationMinutes\": 90\n}"
-            },
-            "url": {
-              "raw": "http://localhost:8080/services/{{service1_id}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["services", "{{service1_id}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Deletar (Desativar) Serviço",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://localhost:8080/services/{{service3_id}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["services", "{{service3_id}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Deactivate Branch Service",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "http://localhost:8080/branchs-services/{{branch_service_id}}/deactivate",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["branchs-services", "{{branch_service_id}}", "deactivate"]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "establishment_id",
-      "value": ""
-    },
-    {
-      "key": "branch1_id",
-      "value": ""
-    },
-    {
-      "key": "branch2_id",
-      "value": ""
-    },
-    {
-      "key": "service1_id",
-      "value": ""
-    },
-    {
-      "key": "service2_id",
-      "value": ""
-    },
-    {
-      "key": "service3_id",
-      "value": ""
-    },
-    {
-      "key": "client1_id",
-      "value": ""
-    },
-    {
-      "key": "client2_id",
-      "value": ""
-    },
-    {
-      "key": "appointment1_id",
-      "value": ""
-    },
-    {
-      "key": "appointment2_id",
-      "value": ""
-    },
-    {
-      "key": "token",
-      "value": ""
-    },
-    {
-      "key": "token_client",
-      "value": ""
-    },
-    {
-      "key": "branch_service_id",
-      "value": ""
     }
   ]
 }
