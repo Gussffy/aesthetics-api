@@ -23,7 +23,7 @@ Aesthetics API is a backend system designed to power aesthetics businesses. It a
 
 | Technology | Version | Purpose |
 |---|---|---|
-| Java | 17 | Programming language |
+| Java | 21 | Programming language |
 | Spring Boot | 4.0.3 | Application framework |
 | Spring Web MVC | — | REST API layer |
 | Spring Data JPA | — | Database access and ORM |
